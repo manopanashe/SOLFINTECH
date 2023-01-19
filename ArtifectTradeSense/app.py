@@ -11,6 +11,7 @@ from  keras.layers import  Dense
 from keras.layers import Dropout
 import sqlite3
 
+
 #Connect to Database
 conn = sqlite3.connect('data.db')
 c = conn.cursor()
@@ -31,6 +32,8 @@ def view_all_users():
     user_info = c.fetchall()
     return user_info
 #------------------------------------------------------------------------------------------------------------------
+
+
 st.set_page_config(layout='wide',initial_sidebar_state='expanded')
 st.title('Trade Sense')
 st.write('Welcome to SOLFINTECH Stock Prediction App. Helping you make informative and beneficial Stock trading choices ')
@@ -45,7 +48,7 @@ with st.sidebar:
     menu = ['Login', 'SignUp']
     choice = st.sidebar.selectbox('Further Access', menu)
 
-
+@st.cache()
 def load_data(ticker):
     train_data = yf.download(ticker,START,TODAY )
     train_data.isna()
@@ -126,7 +129,8 @@ test_predicted = model.predict(test_seq)
 # Inversing scaling on predicted data
 test_inverse_predicted = Ms.inverse_transform(test_predicted)
 #Merging predicted data to our dataset
-new_stock_data = pd.concat([data.iloc[-320:].copy(),pd.DataFrame(test_inverse_predicted,columns=['Open_predicted','Close_predicted'],index=data.iloc[-304:].index)], axis=1)
+
+new_stock_data = pd.concat([data.iloc[-320:].copy(),pd.DataFrame(test_inverse_predicted,columns=['Open_predicted','Close_predicted'],index=data.iloc[-305:].index)], axis=1)
 # Inverse scaling new dataset
 new_stock_data[['Open','Close']] = Ms.inverse_transform(new_stock_data[['Open','Close']])
 
