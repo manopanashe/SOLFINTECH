@@ -82,10 +82,7 @@ st.subheader('Raw data')
 st.write(df.tail(5))
 plot_Close_raw_data()
 
-st.sidebar.subheader('Log In')
-username = st.sidebar.text_input('User Name')
-password = st.sidebar.text_input('Password', type='password')
-login_btn = st.sidebar.checkbox('Login')
+
 
 
 # Create a new DataFrame with only closing price and date
@@ -156,8 +153,8 @@ price = up_coming_pred.iloc[329]['Close']
 st.write('The Predicted Price for tomorrow is $',price)
 
 fig2, ax = plt.subplots(figsize=(10, 4))
-ax.plot(new_stock_data.loc['2021-04-01':, 'Close'], label='Current close Price')
-ax.plot(up_coming_pred.loc['2021-04-01':, 'Close'], label='Upcoming close Price')
+ax.plot(new_stock_data.loc['2016-01-01':, 'Close'], label='Current close Price')
+ax.plot(up_coming_pred.loc['2016-01-01':, 'Close'], label='Upcoming close Price')
 plt.setp(ax.xaxis.get_majorticklabels(), rotation=45)
 ax.set_xlabel('Date', size=15)
 ax.set_ylabel('Stock Price', size=15)
@@ -178,7 +175,10 @@ st.pyplot(fig)
 
 st.title('To access further features Please Sign Up or Log In')
 if choice == 'Login':
-
+    st.sidebar.subheader('Log In')
+    username = st.sidebar.text_input('User Name')
+    password = st.sidebar.text_input('Password', type='password',key='log_in_password')
+    login_btn = st.sidebar.checkbox('Login')
     if login_btn:
             #if Password == Password:
             create_user_table()
@@ -202,7 +202,7 @@ if choice == 'Login':
 elif choice == 'SignUp':
     st.sidebar.subheader('Create New Account')
     new_user = st.sidebar.text_input('Username')
-    new_password = st.sidebar.text_input('Password',type='password')
+    new_password = st.sidebar.text_input('Password',type='password',key='sign_in_password')
     if st.sidebar.button('Signup'):
             create_user_table()
             add_user_data(new_user,new_password)
